@@ -1,305 +1,287 @@
-# Student Performance Prediction --- Mathematical Foundations
+# Student Performance Prediction: Mathematical Foundations
 
-> Comprehensive study notes for an end-to-end Linear Regression project
-> using the UCI Student Performance Dataset.
+> A concise mathematical companion to an end-to-end linear-regression project using the UCI Student Performance dataset.
 
-------------------------------------------------------------------------
+---
 
-# Chapter 1 --- Understanding the Dataset
+## 1. Understanding the Dataset
 
-## Objective
+### Objective
 
-Predict the final grade (**G3**) of a student from demographic,
-academic, family and lifestyle features.
+Predict a student's final grade, $G3$, from demographic, academic, family, and lifestyle features.
 
-## Dataset
+### Dataset at a glance
 
--   Samples: **649 students** (`student-por.csv`)
--   Features: **32 input features**
--   Target: **G3**
+| Item | Value |
+| --- | --- |
+| Dataset file | `student-por.csv` |
+| Observations | 649 students |
+| Input features | 32 |
+| Target | $G3$ |
 
-## Machine Learning Representation
+### Machine-learning representation
 
-Let
+Let $m$ denote the number of students and $n$ the number of input features. The design matrix is
 
-\[ X =
-```{=tex}
+$$
+\mathbf{X} =
 \begin{bmatrix}
-x_{11} & x_{12} & \cdots & x_{1n}\\
-x_{21} & x_{22} & \cdots & x_{2n}\\
-\vdots & \vdots & \ddots & \vdots\\
+x_{11} & x_{12} & \cdots & x_{1n} \\
+x_{21} & x_{22} & \cdots & x_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
 x_{m1} & x_{m2} & \cdots & x_{mn}
 \end{bmatrix}
-```
-\]
+\in \mathbb{R}^{m \times n}.
+$$
 
-Target
+The target vector is
 
-\[ y=
-```{=tex}
+$$
+\mathbf{y} =
 \begin{bmatrix}
-G3_1\\
-G3_2\\
-\vdots\\
+G3_1 \\
+G3_2 \\
+\vdots \\
 G3_m
 \end{bmatrix}
+\in \mathbb{R}^{m}.
+$$
+
+Each row of $\mathbf{X}$ represents one student, and each column represents one feature.
+
+---
+
+## 2. Mathematics of Linear Regression
+
+### Simple linear regression
+
+For one predictor $x$, the predicted value is
+
+$$
+\hat{y} = mx + c,
+$$
+
+where $m$ is the slope and $c$ is the intercept.
+
+### Multiple linear regression
+
+With $n$ predictors, the model for a single observation is
+
+$$
+\hat{y} = w_1x_1 + w_2x_2 + \cdots + w_nx_n + b.
+$$
+
+In vector form for the full dataset:
+
+$$
+\hat{\mathbf{y}} = \mathbf{X}\mathbf{w} + b\mathbf{1},
+$$
+
+where $\mathbf{w} \in \mathbb{R}^{n}$ is the coefficient vector, $b$ is the intercept, and $\mathbf{1}$ is an $m$-dimensional vector of ones.
+
+### Residuals
+
+The residual vector measures prediction error:
+
+$$
+\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}}.
+$$
+
+### Least-squares objective
+
+Linear regression chooses parameters that minimize the average squared residual:
+
+$$
+J(\mathbf{w}, b) = \frac{1}{m}\sum_{i=1}^{m}\left(y_i - \hat{y}_i\right)^2.
+$$
+
+$$
+\underset{\mathbf{w},\,b}{\operatorname{minimize}} \quad J(\mathbf{w}, b).
+$$
+
+#### Why square the error?
+
+- It prevents positive and negative errors from cancelling each other out.
+- It gives greater weight to larger mistakes.
+- It produces a smooth, differentiable optimization objective.
+
+### Learning process
+
+```text
+Initialize weights → Predict → Compute residuals → Compute cost
+        ↑                                             │
+        └──────────── Update weights ←────────────────┘
+                    (repeat until convergence)
 ```
-\]
 
-Each row is one student (observation). Each column is one feature.
+---
 
-------------------------------------------------------------------------
+## 3. Statistics Behind Exploratory Data Analysis
 
-# Chapter 2 --- Mathematics of Linear Regression
+### Mean
 
-## Simple Linear Regression
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i.
+$$
 
-\[ y = mx + c \]
+### Median
+
+The middle value after sorting the observations. It is less sensitive to outliers than the mean.
+
+### Variance
+
+$$
+\sigma^2 = \frac{1}{n}\sum_{i=1}^{n}\left(x_i - \bar{x}\right)^2.
+$$
+
+Variance measures the spread of values around their mean.
+
+### Standard deviation
+
+$$
+\sigma = \sqrt{\sigma^2}.
+$$
+
+### Covariance
+
+$$
+\operatorname{Cov}(X,Y) = \frac{1}{n}\sum_{i=1}^{n}
+\left(x_i - \bar{x}\right)\left(y_i - \bar{y}\right).
+$$
+
+A positive covariance indicates that the variables tend to increase together.
+
+### Pearson correlation
+
+$$
+r_{X,Y} = \frac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}.
+$$
+
+| Correlation | Interpretation |
+| ---: | --- |
+| $+1$ | Perfect positive linear relationship |
+| $0$ | No linear relationship |
+| $-1$ | Perfect negative linear relationship |
+
+### Typical EDA flow
+
+```text
+Load data → Inspect shape & types → Check missing values
+    → Summarize statistics → Visualize distributions
+    → Analyze correlations → Detect outliers
+```
+
+Useful visualizations include histograms, box plots, scatter plots, correlation heatmaps, and pair plots.
+
+---
+
+## 4. Data Preprocessing
+
+### Missing values
+
+Mean imputation replaces a missing value with
+
+$$
+\bar{x} = \frac{x_1 + x_2 + \cdots + x_n}{n}.
+$$
+
+Median imputation is often preferable when the feature contains substantial outliers.
+
+### Encoding categorical variables
+
+Models require numeric inputs. Common approaches are:
+
+- **Label encoding** — maps each category to an integer.
+- **One-hot encoding** — creates a binary indicator column for each category.
+
+### Feature scaling
+
+**Min–max scaling** maps a value to a chosen range, usually $[0,1]$:
+
+$$
+x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}}.
+$$
+
+**Standardization** expresses a value in standard deviations from the mean:
+
+$$
+z = \frac{x - \mu}{\sigma}.
+$$
+
+### Train–test split
+
+A typical split uses 80% of the data for training and 20% for testing. Keep the test set isolated during training to avoid **data leakage**.
+
+---
+
+## 5. Model Evaluation
+
+Let $y_i$ be the actual value and $\hat{y}_i$ the prediction for observation $i$.
+
+### Mean absolute error
+
+$$
+\operatorname{MAE} = \frac{1}{m}\sum_{i=1}^{m}\left|y_i - \hat{y}_i\right|.
+$$
+
+### Mean squared error
+
+$$
+\operatorname{MSE} = \frac{1}{m}\sum_{i=1}^{m}\left(y_i - \hat{y}_i\right)^2.
+$$
+
+### Root mean squared error
+
+$$
+\operatorname{RMSE} = \sqrt{\operatorname{MSE}}.
+$$
+
+Lower MAE, MSE, and RMSE indicate more accurate predictions.
+
+### Coefficient of determination
+
+$$
+R^2 = 1 - \frac{SS_{\mathrm{res}}}{SS_{\mathrm{tot}}},
+$$
 
 where
 
--   (m): slope
--   (c): intercept
+$$
+SS_{\mathrm{res}} = \sum_{i=1}^{m}\left(y_i - \hat{y}_i\right)^2,
+\qquad
+SS_{\mathrm{tot}} = \sum_{i=1}^{m}\left(y_i - \bar{y}\right)^2.
+$$
 
-## Multiple Linear Regression
+| $R^2$ value | Meaning |
+| ---: | --- |
+| $1$ | Perfect prediction |
+| $0$ | No better than predicting the mean |
+| $< 0$ | Worse than the mean predictor |
 
-\[ `\hat `{=tex}y=w_1x_1+w_2x_2+`\cdots`{=tex}+w_nx_n+b \]
+---
 
-Vector notation
+## Complete Project Pipeline
 
-\[ `\hat `{=tex}y=Xw+b \]
-
-## Residual
-
-\[ e=y-`\hat `{=tex}y \]
-
-## Least Squares Objective
-
-\[ J(w,b)=`\frac`{=tex}1n`\sum`{=tex}\_{i=1}^{n}(y_i-`\hat `{=tex}y_i)^2
-\]
-
-The objective is
-
-\[ `\min`{=tex}\_{w,b}J(w,b) \]
-
-### Why square the error?
-
--   Prevent positive and negative errors from cancelling.
--   Penalize larger mistakes more heavily.
--   Produces a differentiable objective.
-
-### Learning Process
-
-``` text
-Initialize weights
-      │
-      ▼
-Predict
-      │
-      ▼
-Compute residuals
-      │
-      ▼
-Compute cost
-      │
-      ▼
-Update weights
-      │
-      ▼
-Repeat until convergence
+```text
+Dataset → Data Understanding → EDA → Preprocessing → Feature Selection
+    → Train/Test Split → Linear Regression → Prediction
+    → MAE • MSE • RMSE • R² → Interpret Results
 ```
 
-------------------------------------------------------------------------
+## Interview Notes
 
-# Chapter 3 --- Statistics Behind EDA
+- Explain the purpose of every preprocessing step.
+- Justify why linear regression is appropriate for the target and features.
+- Interpret model coefficients rather than reporting metrics alone.
+- Discuss the core assumptions: linearity, independence, homoscedasticity, approximately normal residuals, and low multicollinearity.
 
-## Mean
+## Possible Extensions
 
-\[ `\bar `{=tex}x=`\frac`{=tex}1n`\sum `{=tex}x_i \]
-
-## Median
-
-Middle value after sorting.
-
-## Variance
-
-\[ `\sigma`{=tex}^2=`\frac`{=tex}1n`\sum`{=tex}(x_i-`\bar `{=tex}x)^2 \]
-
-Measures spread.
-
-## Standard Deviation
-
-\[ `\sigma`{=tex}=`\sqrt{\sigma^2}`{=tex} \]
-
-## Covariance
-
-\[
-Cov(X,Y)=`\frac`{=tex}1n`\sum`{=tex}(x_i-`\bar `{=tex}x)(y_i-`\bar `{=tex}y)
-\]
-
-Positive covariance → variables increase together.
-
-## Pearson Correlation
-
-\[ r=`\frac{Cov(X,Y)}{\sigma_X\sigma_Y}`{=tex} \]
-
-Range:
-
--   +1 Perfect positive
--   0 No linear relation
--   -1 Perfect negative
-
-### Typical EDA Flow
-
-``` text
-Load Data
-    │
-    ▼
-Shape & Types
-    │
-    ▼
-Missing Values
-    │
-    ▼
-Summary Statistics
-    │
-    ▼
-Distributions
-    │
-    ▼
-Correlation Matrix
-    │
-    ▼
-Outlier Detection
-```
-
-Suggested plots:
-
--   Histogram
--   Box Plot
--   Scatter Plot
--   Correlation Heatmap
--   Pair Plot
-
-------------------------------------------------------------------------
-
-# Chapter 4 --- Data Preprocessing
-
-## Missing Values
-
-Mean
-
-\[ x=`\frac{x_1+x_2+\cdots+x_n}{n}`{=tex} \]
-
-Median is preferred when outliers exist.
-
-## Encoding
-
-Convert categorical variables into numbers.
-
-Examples:
-
--   Label Encoding
--   One-Hot Encoding
-
-## Feature Scaling
-
-### Min-Max Scaling
-
-\[ x'=`\frac{x-x_{min}}{x_{max}-x_{min}}`{=tex} \]
-
-### Standardization
-
-\[ z=`\frac{x-\mu}{\sigma}`{=tex} \]
-
-## Train-Test Split
-
-Typical split
-
--   80% Training
--   20% Testing
-
-Never use test data during training to avoid **data leakage**.
-
-------------------------------------------------------------------------
-
-# Chapter 5 --- Model Evaluation
-
-## Mean Absolute Error
-
-\[ MAE=`\frac`{=tex}1n`\sum`{=tex}\|y-`\hat `{=tex}y\| \]
-
-## Mean Squared Error
-
-\[ MSE=`\frac`{=tex}1n`\sum`{=tex}(y-`\hat `{=tex}y)\^2 \]
-
-## Root Mean Squared Error
-
-\[ RMSE=`\sqrt{MSE}`{=tex} \]
-
-Lower RMSE indicates better predictions.
-
-## Coefficient of Determination
-
-\[ R\^2=1-`\frac{SS_{res}}{SS_{tot}}`{=tex} \]
-
-Interpretation
-
-  R²    Meaning
-  ----- -------------------------------
-  1     Perfect prediction
-  0     Same as predicting the mean
-  \<0   Worse than the mean predictor
-
-------------------------------------------------------------------------
-
-# Complete Project Pipeline
-
-``` text
-Dataset
-   │
-   ▼
-Data Understanding
-   │
-   ▼
-EDA
-   │
-   ▼
-Preprocessing
-   │
-   ▼
-Feature Selection
-   │
-   ▼
-Train/Test Split
-   │
-   ▼
-Linear Regression
-   │
-   ▼
-Prediction
-   │
-   ▼
-MAE • MSE • RMSE • R²
-   │
-   ▼
-Interpret Results
-```
-
-# Interview Notes
-
--   Explain every preprocessing step.
--   Justify why Linear Regression is appropriate.
--   Interpret coefficients instead of only reporting metrics.
--   Discuss assumptions:
-    -   Linearity
-    -   Independence
-    -   Homoscedasticity
-    -   Approximately normal residuals
-    -   Low multicollinearity
-
-# Next Expansion
-
-Future versions can add: - Polynomial Regression - Ridge Regression -
-Lasso Regression - Feature Engineering - Cross Validation - Residual
-Diagnostics - Hyperparameter Tuning - Model Deployment
+- Polynomial regression
+- Ridge regression
+- Lasso regression
+- Feature engineering
+- Cross-validation
+- Residual diagnostics
+- Hyperparameter tuning
+- Model deployment
