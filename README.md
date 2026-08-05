@@ -2,7 +2,7 @@
 
 > An end-to-end Machine Learning project that predicts a student's final academic performance using Linear Regression while demonstrating the complete Data Science workflow, from Exploratory Data Analysis (EDA) to model evaluation.
 
-![Python](https://img.shields.io/badge/Python-3.12+-blue?logo=python)
+![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python)
 ![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?logo=pandas)
 ![NumPy](https://img.shields.io/badge/NumPy-Scientific%20Computing-013243?logo=numpy)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-Visualization-orange)
