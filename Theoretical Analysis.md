@@ -96,7 +96,7 @@ J(\mathbf{w}, b) = \frac{1}{m}\sum_{i=1}^{m}\left(y_i - \hat{y}_i\right)^2.
 $$
 
 $$
-\underset{\mathbf{w},\,b}{\operatorname{minimize}} \quad J(\mathbf{w}, b).
+\min_{\mathbf{w},\,b} \quad J(\mathbf{w}, b).
 $$
 
 #### Why square the error?
@@ -145,7 +145,7 @@ $$
 ### Covariance
 
 $$
-\operatorname{Cov}(X,Y) = \frac{1}{n}\sum_{i=1}^{n}
+\mathrm{Cov}(X,Y) = \frac{1}{n}\sum_{i=1}^{n}
 \left(x_i - \bar{x}\right)\left(y_i - \bar{y}\right).
 $$
 
@@ -154,7 +154,7 @@ A positive covariance indicates that the variables tend to increase together.
 ### Pearson correlation
 
 $$
-r_{X,Y} = \frac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}.
+r_{X,Y} = \frac{\mathrm{Cov}(X,Y)}{\sigma_X\sigma_Y}.
 $$
 
 | Correlation | Interpretation |
@@ -221,19 +221,19 @@ Let $y_i$ be the actual value and $\hat{y}_i$ the prediction for observation $i$
 ### Mean absolute error
 
 $$
-\operatorname{MAE} = \frac{1}{m}\sum_{i=1}^{m}\left|y_i - \hat{y}_i\right|.
+\mathrm{MAE} = \frac{1}{m}\sum_{i=1}^{m}\left|y_i - \hat{y}_i\right|.
 $$
 
 ### Mean squared error
 
 $$
-\operatorname{MSE} = \frac{1}{m}\sum_{i=1}^{m}\left(y_i - \hat{y}_i\right)^2.
+\mathrm{MSE} = \frac{1}{m}\sum_{i=1}^{m}\left(y_i - \hat{y}_i\right)^2.
 $$
 
 ### Root mean squared error
 
 $$
-\operatorname{RMSE} = \sqrt{\operatorname{MSE}}.
+\mathrm{RMSE} = \sqrt{\mathrm{MSE}}.
 $$
 
 Lower MAE, MSE, and RMSE indicate more accurate predictions.
