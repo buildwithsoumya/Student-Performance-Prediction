@@ -41,6 +41,6 @@ models/
 # ==========================
 # Generated Results
 # ==========================
-reports/figures/*.png
-reports/results/*
-!reports/results/.gitkeep
+#reports/figures/*.png
+#reports/results/*
+#!reports/results/.gitkeep
